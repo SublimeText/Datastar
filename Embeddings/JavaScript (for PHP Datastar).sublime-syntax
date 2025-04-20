@@ -1,0 +1,9 @@
+%YAML 1.2
+---
+scope: source.js.embedded.php.datastar
+version: 2
+hidden: true
+
+extends:
+  - Packages/PHP/JavaScript (PHP).sublime-syntax
+  - JavaScript (for HTML Datastar).sublime-syntax

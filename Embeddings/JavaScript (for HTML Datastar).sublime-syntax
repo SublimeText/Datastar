@@ -1,0 +1,25 @@
+%YAML 1.2
+---
+scope: source.js.embedded.html.datastar
+version: 2
+hidden: true
+
+extends: Packages/JavaScript/JavaScript.sublime-syntax
+
+contexts:
+
+  main:
+    - include: script
+
+  expressions:
+    # required until ST4177 (PR #4003)
+    - match: (?=\S)
+      push: [ expression-end, expression-begin ]
+
+  expression-begin:
+    - meta_prepend: true
+    - match: (@){{identifier_name}}(?=\s*\()
+      scope: meta.function-call.js support.function.action.js.datastar
+      captures:
+        1: punctuation.definition.variable.js.datastar
+      push: function-call-arguments

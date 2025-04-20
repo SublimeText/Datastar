@@ -1,0 +1,68 @@
+{
+	"scope": "meta.embedded.datastar - meta.embedded.datastar support.function",
+	"completions": [
+		{
+			"trigger": "@get()",
+			"contents": "@get($1)",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sends a GET request to the backend and merges the response.",
+		},
+		{
+			"trigger": "@post()",
+			"contents": "@post($1)",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sends a POST request to the backend and merges the response.",
+		},
+		{
+			"trigger": "@put()",
+			"contents": "@put($1)",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sends a PUT request to the backend and merges the response.",
+		},
+		{
+			"trigger": "@patch()",
+			"contents": "@patch($1)",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sends a PATCH request to the backend and merges the response.",
+		},
+		{
+			"trigger": "@delete()",
+			"contents": "@delete($1)",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sends a DELETE request to the backend and merges the response.",
+		},
+		{
+			"trigger": "@clipboard()",
+			"contents": "@clipboard($1)",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Copies the provided evaluated expression to the clipboard.",
+		},
+		{
+			"trigger": "@setAll()",
+			"contents": "@setAll($1)",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sets all matching signals to a provided value.",
+		},
+		{
+			"trigger": "@toggleAll()",
+			"contents": "@toggleAll($1)",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Toggles all matching signal values.",
+		},
+		{
+			"trigger": "@fit()",
+			"contents": "@fit($1)",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Makes a value linearly interpolate.",
+		},
+	],
+}

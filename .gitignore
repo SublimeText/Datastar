@@ -1,0 +1,13 @@
+# MacOS specific ignores
+.DS_Store
+
+# development
+.sublime/
+.venv/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# python cache files
+__pycache__/
+*.pyc

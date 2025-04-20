@@ -1,0 +1,195 @@
+%YAML 1.2
+---
+# https://data-star.dev/
+# https://www.sublimetext.com/docs/syntax.html
+name: HTML (Datastar)
+scope: text.html.datastar
+version: 2
+
+extends: Packages/HTML/HTML.sublime-syntax
+
+contexts:
+
+  tag-attributes:
+    - meta_prepend: true
+    - include: tag-data-attributes
+
+###[ DATASTAR ATTRIBUTES ]####################################################
+
+  tag-data-attributes:
+    # data binding
+    - match: data-(?:bind|indicator|ref)(?:-|{{attribute_name_break}})
+      push:
+        - tag-data-bind-meta
+        - tag-data-bind-assignment
+        - tag-data-attribute-modifier
+        - tag-data-bind-name
+    # computed signals
+    - match: data-(?:computed|on-signal-change|signals)(?:-|{{attribute_name_break}})
+      push:
+        - tag-data-bind-meta
+        - tag-data-attribute-assignment
+        - tag-data-attribute-modifier
+        - tag-data-bind-name
+    # event binding
+    - match: data-on(?:-|{{attribute_name_break}})
+      push:
+        - tag-data-event-meta
+        - tag-data-attribute-assignment
+        - tag-data-attribute-modifier
+        - tag-data-attribute-name
+    # events and other datastar attributes
+    - match: data-
+      push:
+        - tag-data-attribute-meta
+        - tag-data-attribute-assignment
+        - tag-data-attribute-modifier
+        - tag-data-attribute-name
+
+###[ DATASTAR BINDING ]#######################################################
+
+  tag-data-bind-meta:
+    - meta_include_prototype: false
+    - meta_scope: meta.directive.binding.datastar
+    - include: immediately-pop
+
+  tag-data-bind-name:
+    - meta_content_scope: variable.other.signal.datastar
+    - include: tag-data-attribute-name
+
+  tag-data-bind-assignment:
+    - meta_include_prototype: false
+    - match: =
+      scope: punctuation.separator.key-value.html
+      set: tag-data-bind-value
+    # don't leak meta scope to following whitespace if assignment is absent
+    - match: (?=\s*[^=])
+      pop: 1
+
+  tag-data-bind-value:
+    - meta_include_prototype: false
+    - match: \"
+      scope:
+        meta.string.html string.quoted.double.html
+        punctuation.definition.string.begin.html
+      set: tag-data-bind-value-double-quoted-content
+    - match: \'
+      scope:
+        meta.string.html string.quoted.single.html
+        punctuation.definition.string.begin.html
+      set: tag-data-bind-value-single-quoted-content
+    - match: '{{unquoted_attribute_start}}'
+      set: tag-data-bind-value-unquoted-content
+    - include: else-pop
+
+  tag-data-bind-value-double-quoted-content:
+    - meta_include_prototype: false
+    - meta_content_scope: meta.string.html variable.other.signal.datastar
+    - include: strings-double-quoted-end
+
+  tag-data-bind-value-single-quoted-content:
+    - meta_include_prototype: false
+    - meta_content_scope: meta.string.html variable.other.signal.datastar
+    - include: strings-single-quoted-end
+
+  tag-data-bind-value-unquoted-content:
+    - meta_include_prototype: false
+    - meta_content_scope: meta.string.html variable.other.signal.datastar
+    - include: tag-attribute-value-unquoted-end
+
+###[ DATASTAR EVENTS ]########################################################
+
+  tag-data-event-meta:
+    - meta_include_prototype: false
+    - meta_scope: meta.directive.event.datastar
+    - include: immediately-pop
+
+###[ DATASTAR ATTRIBUTES ]####################################################
+
+  tag-data-attribute-meta:
+    - meta_include_prototype: false
+    - meta_scope: meta.directive.other.datastar
+    - include: immediately-pop
+
+  tag-data-attribute-name:
+    # use branching and dedicated contexts to enable (e.g.: PHP tags) in names,
+    # starting with identifier assuming qualifier being less likely
+    - meta_include_prototype: false
+    - match: ''
+      branch_point: tag-data-attribute-name
+      branch:
+        - tag-data-attribute-identifier
+        - tag-data-attribute-qualifier
+
+  tag-data-attribute-identifier:
+    - match: (?=__|{{attribute_name_break_char}})
+      pop: 2
+    - match: (?=\.)
+      fail: tag-data-attribute-name
+    - include: tag-data-attribute-name-content
+
+  tag-data-attribute-qualifier:
+    - clear_scopes: 1
+    - meta_content_scope: variable.namespace.datastar
+    - match: \.
+      scope: punctuation.accessor.dot.datastar
+      pop: 1
+    - include: tag-data-attribute-name-content
+
+  tag-data-attribute-name-content:
+    - match: \*{1,2}
+      scope: constant.other.wildcard.asterisk.datastar
+    - match: '["''`<]'
+      scope: invalid.illegal.attribute-name.html
+
+  tag-data-attribute-modifier:
+    # https://data-star.dev/reference/attribute_plugins#modifiers-5
+    - meta_include_prototype: false
+    - meta_scope: entity.other.attribute-name.datastar.html
+    - match: __
+      scope: punctuation.separator.modifier.datastar
+      push: tag-data-attribute-modifier-name
+    - match: \.
+      scope: punctuation.separator.key-value.datastar
+      push: tag-data-attribute-modifier-value
+    - include: immediately-pop
+
+  tag-data-attribute-modifier-name:
+    - meta_content_scope: storage.modifier.datastar
+    - match: (?=__|[.{{attribute_name_break_char}}])
+      pop: 1
+
+  tag-data-attribute-modifier-value:
+    - meta_content_scope: constant.other.value.datastar
+    - match: (?=__|{{attribute_name_break_char}})
+      pop: 1
+
+  tag-data-attribute-assignment:
+    - meta_include_prototype: false
+    - match: =
+      scope: punctuation.separator.key-value.html
+      set:
+        - immediately-pop  # workaround https://github.com/sublimehq/sublime_text/issues/4069
+        - tag-data-attribute-value
+    # don't leak meta scope to following whitespace if assignment is absent
+    - match: (?=\s*[^=])
+      pop: 1
+
+  tag-data-attribute-value:
+    - match: \"
+      scope: meta.string.html string.quoted.double.html punctuation.definition.string.begin.html
+      embed: scope:source.js.embedded.html.datastar#expressions
+      embed_scope: meta.string.html meta.embedded.datastar source.js.embedded.html
+      escape: \"
+      escape_captures:
+        0: meta.string.html string.quoted.double.html punctuation.definition.string.end.html
+      pop: 1
+    - match: \'
+      scope: meta.string.html string.quoted.single.html punctuation.definition.string.begin.html
+      embed: scope:source.js.embedded.html.datastar#expressions
+      embed_scope: meta.string.html meta.embedded.datastar source.js.embedded.html
+      escape: \'
+      escape_captures:
+        0: meta.string.html string.quoted.single.html punctuation.definition.string.end.html
+      pop: 1
+    - include: else-pop

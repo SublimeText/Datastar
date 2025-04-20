@@ -1,0 +1,59 @@
+{
+	"scope": "meta.embedded.datastar support.function",
+	"completions": [
+		{
+			"trigger": "@get",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sends a GET request to the backend and merges the response.",
+		},
+		{
+			"trigger": "@post",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sends a POST request to the backend and merges the response.",
+		},
+		{
+			"trigger": "@put",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sends a PUT request to the backend and merges the response.",
+		},
+		{
+			"trigger": "@patch",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sends a PATCH request to the backend and merges the response.",
+		},
+		{
+			"trigger": "@delete",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sends a DELETE request to the backend and merges the response.",
+		},
+		{
+			"trigger": "@clipboard",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Copies the provided evaluated expression to the clipboard.",
+		},
+		{
+			"trigger": "@setAll",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Sets all matching signals to a provided value.",
+		},
+		{
+			"trigger": "@toggleAll",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Toggles all matching signal values.",
+		},
+		{
+			"trigger": "@fit",
+			"annotation": "Datastar",
+			"kind": ["function", "f", "Action"],
+			"details": "Makes a value linearly interpolate.",
+		},
+	],
+}

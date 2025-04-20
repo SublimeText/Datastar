@@ -1,0 +1,42 @@
+| SYNTAX TEST "HTML (Datastar).sublime-syntax"
+
+<input data-bind-input />
+|                @@@@@ global-definition
+
+<div data-signals-input="1"></div>
+|                 @@@@@ global-definition
+
+<div data-signals-form.input="2"></div>
+|                      @@@@@ global-definition
+
+<div data-signals="{input: 1, form: {input: 2}}"></div>
+|                   @@@@@ global-definition
+|                             @@@@ global-definition
+|                                    @@@@@ global-definition
+
+<div data-computed-repeated="$input.repeat(2)">
+|                  @@@@@@@@ global-definition
+|                             @@@@@ reference
+|                                   @@@@@@ reference
+
+    <div data-text="$repeated">...</div>
+|                    @@@@@@@@ reference
+</div>
+
+<button data-class-hidden="$input == ''">Save</button>
+|                           @@@@@ reference
+
+<div data-ref-my-signal__case.camel></div>
+|             @@@@@@@@@ global-definition
+
+<input data-bind-bar name="bar" data-custom-validity="$foo === $bar ? '' : 'Field values must be the same.'" />
+|                @@@ global-definition
+|                                                      @@@ reference
+|                                                               @@@ reference
+
+<div data-on-signal-change-foo="$fooCount++"></div>
+|                          @@@ global-definition
+|                                @@@@@@@@ reference
+
+<input data-indicator-fetching />
+|                     @@@@@@@@ global-definition

@@ -1,0 +1,32 @@
+%YAML 1.2
+---
+# https://data-star.dev/
+# https://www.sublimetext.com/docs/syntax.html
+name: PHP (Datastar)
+scope: text.html.php.datastar
+version: 2
+
+extends:
+  - Packages/PHP/PHP.sublime-syntax
+  - HTML (Datastar).sublime-syntax
+
+contexts:
+
+  tag-data-attribute-value:
+    - match: \"
+      scope: meta.string.html string.quoted.double.html punctuation.definition.string.begin.html
+      embed: scope:source.js.embedded.php.datastar#expressions
+      embed_scope: meta.string.html source.js.embedded.html
+      escape: \"
+      escape_captures:
+        0: meta.string.html string.quoted.double.html punctuation.definition.string.end.html
+      pop: 1
+    - match: \'
+      scope: meta.string.html string.quoted.single.html punctuation.definition.string.begin.html
+      embed: scope:source.js.embedded.php.datastar#expressions
+      embed_scope: meta.string.html source.js.embedded.html
+      escape: \'
+      escape_captures:
+        0: meta.string.html string.quoted.single.html punctuation.definition.string.end.html
+      pop: 1
+    - include: else-pop
